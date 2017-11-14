@@ -92,14 +92,18 @@
             success:function(data){
                 if(data > 0) {
                     $.messager.alert('温馨提示','恭喜！添加商品成功！');
+                   $('#tab').tabs('close','新增商品');
+                    ue.destroy();
                     ddshop.addTabs('查询商品', 'item-list');
                 }
+
             }
         });
     }
 
     //实例化富文本编辑器
     var ue = UE.getEditor('container');
+    UE.getEditor('container').render('container')
     //加载商品类目的树形下拉框
     $('#cid').combotree({
         url: 'itemCats?parentId=0',

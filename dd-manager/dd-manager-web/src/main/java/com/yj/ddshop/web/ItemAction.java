@@ -78,6 +78,30 @@ public class ItemAction {
         }
         return i;
     }
+    @ResponseBody
+    @RequestMapping("/items/batchdown")
+    public int updateBatchDown(@RequestParam("ids[]") List<Long> ids) {
+        int i = 0;
+        try {
+            i = itemService.updateBatchdown(ids);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
+    }
+    @ResponseBody
+    @RequestMapping("/items/batchup")
+    public int updateBatchDownup(@RequestParam("ids[]") List<Long> ids) {
+        int i = 0;
+        try {
+            i = itemService.updateBatchup(ids);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
+    }
 
     @ResponseBody
     @RequestMapping("/item")

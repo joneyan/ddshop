@@ -105,6 +105,44 @@ public class ItemServiceImpl implements ItemService {
         }
         return i;
     }
+    @Override
+    public int updateBatchdown(List<Long> ids) {
+        int i = 0;
+        try {
+            //准备商品对象，这个对象包含了状态为3的字段
+            TbItem record = new TbItem();
+            record.setStatus((byte) 2);
+            //创建更新模板 update tb_item set status=? where id in (?,?,?)
+            TbItemExample example = new TbItemExample();
+            TbItemExample.Criteria criteria = example.createCriteria();
+            criteria.andIdIn(ids);
+            //执行更新
+            i = itemDao.updateByExampleSelective(record, example);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
+    }
+    @Override
+    public int updateBatchup(List<Long> ids) {
+        int i = 0;
+        try {
+            //准备商品对象，这个对象包含了状态为3的字段
+            TbItem record = new TbItem();
+            record.setStatus((byte) 1);
+            //创建更新模板 update tb_item set status=? where id in (?,?,?)
+            TbItemExample example = new TbItemExample();
+            TbItemExample.Criteria criteria = example.createCriteria();
+            criteria.andIdIn(ids);
+            //执行更新
+            i = itemDao.updateByExampleSelective(record, example);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+        return i;
+    }
 
     //加上注解@Transactional之后，这个方法就变成了事务方法
     //并不是事务方法越多越好，查询方法不需要添加为事务方法

@@ -42,4 +42,8 @@ public interface ItemService {
      * @return 受到影响的行数
      */
     int saveItem(TbItem tbItem, String content);
+
+    int updateBatchdown(List<Long> ids);
+
+    int updateBatchup(List<Long> ids);
 }
