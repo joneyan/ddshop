@@ -7,9 +7,11 @@ import com.yj.ddshop.common.util.IDUtils;
 import com.yj.ddshop.dao.TbItemCustomMapper;
 import com.yj.ddshop.dao.TbItemDescMapper;
 import com.yj.ddshop.dao.TbItemMapper;
+import com.yj.ddshop.dao.TbItemParamItemMapper;
 import com.yj.ddshop.pojo.po.TbItem;
 import com.yj.ddshop.pojo.po.TbItemDesc;
 import com.yj.ddshop.pojo.po.TbItemExample;
+import com.yj.ddshop.pojo.po.TbItemParamItem;
 import com.yj.ddshop.pojo.vo.TbItemCustom;
 import com.yj.ddshop.pojo.vo.TbItemQuery;
 import com.yj.ddshop.service.ItemService;
@@ -41,7 +43,8 @@ public class ItemServiceImpl implements ItemService {
     private TbItemCustomMapper itemCustomDao;
     @Autowired
     private TbItemDescMapper itemDescDao;
-
+    @Autowired
+    private TbItemParamItemMapper itemParamItemDao;
 
     @Override
     public TbItem getById(Long itemId) {
@@ -148,7 +151,7 @@ public class ItemServiceImpl implements ItemService {
     //并不是事务方法越多越好，查询方法不需要添加为事务方法
     @Transactional
     @Override
-    public int saveItem(TbItem tbItem, String content) {
+    public int saveItem(TbItem tbItem, String content,String paramData) {
         int i = 0;
         try {
             //这个方法中需要处理两张表格tb_item tb_item_desc
@@ -167,6 +170,14 @@ public class ItemServiceImpl implements ItemService {
             desc.setCreated(new Date());
             desc.setUpdated(new Date());
             i += itemDescDao.insert(desc);
+
+            //处理tb_item_param_item
+            TbItemParamItem tbItemParamItem = new TbItemParamItem();
+            tbItemParamItem.setItemId(itemId);
+            tbItemParamItem.setParamData(paramData);
+            tbItemParamItem.setCreated(new Date());
+            tbItemParamItem.setUpdated(new Date());
+            i += itemParamItemDao.insert(tbItemParamItem);
         }catch (Exception e){
             logger.error(e.getMessage(), e);
             e.printStackTrace();

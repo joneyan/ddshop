@@ -2,6 +2,7 @@ package com.yj.ddshop.service;
 
 import com.yj.ddshop.common.dto.Page;
 import com.yj.ddshop.common.dto.Result;
+import com.yj.ddshop.pojo.po.TbItemParam;
 import com.yj.ddshop.pojo.vo.TbItemParamCustom;
 
 /**
@@ -17,4 +18,8 @@ public interface ItemParamService {
      * @return
      */
     Result<TbItemParamCustom> listItemParamsByPage(Page page);
+
+    int saveItemParam(Long cid, String jsonStr);
+
+    TbItemParam getItemParamByCid(Long cid);
 }
