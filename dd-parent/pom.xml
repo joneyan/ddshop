@@ -10,6 +10,8 @@
     <modules>
         <module>../dd-common</module>
         <module>../dd-manager</module>
+        <module>../dd-upload</module>
+        <module>../dd-portal-web</module>
     </modules>
 
     <!--打包方式，默认为jar-->
@@ -17,6 +19,9 @@
     <!--相关jar的版本号属性-->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <commons-io.version>2.4</commons-io.version>
+        <commons-codec.version>1.9</commons-codec.version>
+        <baidu-ueditor.version>1.1.2</baidu-ueditor.version>
 
         <junit.version>4.12</junit.version>
         <spring.version>4.2.8.RELEASE</spring.version>
@@ -59,7 +64,18 @@
     <!--依赖的声明，但是不会在工程依赖中体现-->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baidu</groupId>
+                <artifactId>ueditor</artifactId>
+                <version>${baidu-ueditor.version}</version>
+            </dependency>
             <!--jsp相关-->
+
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
