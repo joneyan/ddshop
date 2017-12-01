@@ -90,14 +90,17 @@
             },
             //后台处理成功之后的回调函数
             success:function(data){
-                if(data > 0) {
-                    $.messager.alert('温馨提示','恭喜！添加商品成功！');
-                   $('#tab').tabs('close','新增商品');
+                var mr=JSON.parse(data);
+                console.log(data.success);
+                if(mr.success) {
+                    $.messager.alert('温馨提示',mr.message);
+                    $('#tab').tabs('close','新增商品');
                     ue.destroy();
                     ddshop.addTabs('查询商品', 'item-list');
                 }
 
-            }
+            },
+
         });
     }
 

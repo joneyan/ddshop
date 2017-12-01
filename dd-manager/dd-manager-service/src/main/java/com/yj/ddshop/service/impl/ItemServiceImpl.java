@@ -151,13 +151,14 @@ public class ItemServiceImpl implements ItemService {
     //并不是事务方法越多越好，查询方法不需要添加为事务方法
     @Transactional
     @Override
-    public int saveItem(TbItem tbItem, String content,String paramData) {
+    public Long saveItem(TbItem tbItem, String content,String paramData) {
         int i = 0;
+        Long itemId = IDUtils.getItemId();
         try {
             //这个方法中需要处理两张表格tb_item tb_item_desc
             //调用工具类生成商品的ID
             //处理tb_item
-            Long itemId = IDUtils.getItemId();
+
             tbItem.setId(itemId);
             tbItem.setStatus((byte)2);
             tbItem.setCreated(new Date());
@@ -182,6 +183,6 @@ public class ItemServiceImpl implements ItemService {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return i;
+        return itemId;
     }
 }

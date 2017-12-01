@@ -1,5 +1,6 @@
 package com.yj.ddshop.web;
 
+import com.yj.ddshop.common.dto.MessageResult;
 import com.yj.ddshop.common.dto.Order;
 import com.yj.ddshop.common.dto.Page;
 import com.yj.ddshop.common.dto.Result;
@@ -11,9 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jms.*;
 import java.util.List;
 
 /**
@@ -30,6 +34,10 @@ public class ItemAction {
 
     @Autowired
     private ItemService itemService;
+    @Autowired
+    private JmsTemplate jmsTemplate;
+    @Autowired
+    private Destination topicDestination;
 
     @ResponseBody
     @RequestMapping(value = "/item/{itemId}", method = RequestMethod.GET)
@@ -105,15 +113,25 @@ public class ItemAction {
 
     @ResponseBody
     @RequestMapping("/item")
-    public int saveItem(TbItem tbItem,String content,String paramData){
-        int i = 0;
+    public MessageResult saveItem(TbItem tbItem, String content, String paramData){
+        MessageResult mr=new MessageResult();
         try {
-            i = itemService.saveItem(tbItem, content, paramData);
+            final Long itemId  = (Long)itemService.saveItem(tbItem, content, paramData);
+            jmsTemplate.send(topicDestination, new MessageCreator() {
+                @Override
+                public Message createMessage(Session session) throws JMSException {
+                    TextMessage textMessage = session.createTextMessage(itemId + "");
+                    return textMessage;
+
+                }
+            });
+            mr.setMessage("发布手机成功");
+            mr.setSuccess(true);
         }catch (Exception e){
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
-        return i;
+        return mr;
     }
 
 }
